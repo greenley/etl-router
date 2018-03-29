@@ -7,7 +7,7 @@ Convienence function to set up sub-directories.
 from pathlib import Path
 
 def create_subfolders(src_root, folders):
-    if not any(src_root.endswith(token) for token in ('\\', '/')):
+    if not src_root.endswith(tuple(['/', '\\'])):
         src_root += '/'
     folders = [(src_root + el.lstrip('\\').lstrip('/')) for el in folders]
     try:
