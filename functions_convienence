@@ -1,0 +1,17 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Convienence function to set up sub-directories.
+"""
+
+from pathlib import Path
+
+def create_subfolders(src_root, folders):
+    if not any(src_root.endswith(token) for token in ('\\', '/')):
+        src_root += '/'
+    folders = [(src_root + el.lstrip('\\').lstrip('/')) for el in folders]
+    try:
+        [Path(el).mkdir(parents=True, exist_of=True) for el in folders]
+    except OSError as err:
+        print('OS error: {0}'.format(err))
+    return
