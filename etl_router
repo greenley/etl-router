@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+ETL-router main class.  This object watches directories and chooses an
+appropriate ETL pipeline based on the context of files that are written there.
+
+References:
+    https://github.com/gorakhargosh/watchdog
+    https://pythonhosted.org/watchdog/api.html#event-handler-classes
+"""
+
+import time
+from watchdog.observers import Observer
+from watchdog.events import PatternMatchingEventHandler
+
+
+class ETL(PatternMatchingEventHandler):
+    patterns = ['*.*']
+    
+    #def __init__(self):
+        #
+    
+    def router(self, event):
+        #
+        print(event.is_directory, " : ", event.event_type, " : ", event.src_path)
+    
+    def on_any_event(self, event):
+        # on_created <- switch to this when not debugging.
+        self.router(event)
+
+if __name__ == "__main__":
+    observer = Observer()
+    observer.schedule(ETL(), path='./testing/', recursive=True)
+    observer.start()
+    try:
+        while True:
+            time.sleep(5)
+    except KeyboardInterrupt:
+        observer.stop()
+    observer.join()
